@@ -1,0 +1,18 @@
+{
+	"ps_group": [
+		{ "ps_group": "0HON" },
+		{ "ps_group_name": "0PKWT" },
+		{ "ps_group_name": "IA" },
+		{ "ps_group_name": "IB" },
+		{ "ps_group_name": "IC" },
+		{ "ps_group_name": "ID" },
+		{ "ps_group_name": "IIA" },
+		{ "ps_group_name": "IIB" },
+		{ "ps_group_name": "IIC" },
+		{ "ps_group_name": "IID" },
+		{ "ps_group_name": "IIIA" },
+		{ "ps_group_name": "IIIB" },
+		{ "ps_group_name": "IIID" },
+		{ "ps_group_name": "IVB" }
+	]
+}

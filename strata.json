@@ -1,0 +1,11 @@
+{
+	"strata": [
+		{ "strata_name": "Juru" },
+		{ "strata_name": "Pelaksana" },
+		{ "strata_name": "Pembina" },
+		{ "strata_name": "Penata" },
+		{ "strata_name": "Pengatur" },
+		{ "strata_name": "Penyelia Madya" },
+		{ "strata_name": "Penyelia Pratama" }
+	]
+}
