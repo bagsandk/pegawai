@@ -18,14 +18,19 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">No</th>
+                    <th scope="col">Pers_No</th>
                     <th scope="col">Nama</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Tanggal Lahir</th>
+                    <th scope="col">Pendidikan</th>
                     <th scope="col">Strata</th>
                     <th scope="col">Unit</th>
                     <th scope="col">Position</th>
                     <th scope="col">Group</th>
+                    <th scope="col">PS_Group</th>
                     <th scope="col">Level</th>
+                    <th scope="col">Personel Area</th>
+                    <th scope="col">Personel SubArea</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -34,14 +39,19 @@
                 foreach ($karyawan as $key => $t) { ?>
                     <tr>
                         <td><?= $n++; ?></td>
+                        <td><?= $t['Pers_No']; ?></td>
                         <td><?= $t['Personnel_Number']; ?></td>
                         <td><?= $t['Gender_Key']; ?></td>
                         <td><?= date('d-M-y', strtotime($t['Birth_date'])) ?></td>
+                        <td><?= $t['Education'] ?></td>
                         <td><?= $t['Strata'] ?></td>
                         <td><?= $t['Organizational_Unit'] ?></td>
                         <td><?= $t['Position'] ?></td>
                         <td><?= $t['Employee_Group'] ?></td>
+                        <td><?= $t['PS_group'] ?></td>
                         <td><?= $t['Lv'] ?></td>
+                        <td><?= $t['Personnel_Area'] ?></td>
+                        <td><?= $t['Personnel_Subarea'] ?></td>
                         <td>
                             <a href="<?= base_url('karyawan/edit/') . $key ?>">
                                 <div class="icon icon-shape icon-sm bg-gradient-orange text-white rounded-circle shadow" title="Edit">
@@ -54,7 +64,7 @@
                                 </div>
                             </a>
                             <a href="<?= base_url('karyawan/cetak/') . $key ?>">
-                                <div class="icon icon-shape icon-sm bg-gradient-purple text-white rounded-circle shadow" title="Hapus">
+                                <div class="icon icon-shape icon-sm bg-gradient-purple text-white rounded-circle shadow" title="Cetak Data">
                                     <i class="ni ni-cloud-download-95"></i>
                                 </div>
                             </a>

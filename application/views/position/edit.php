@@ -5,14 +5,14 @@
         <h3 class="mb-0"><?= $tittle; ?></h3>
     </div>
     <div class="card-body px-lg-5 py-lg-5">
-        <?php echo form_open('unit/edit/' . $id, array("role" => "form")); ?>
+        <?php echo form_open('position/edit/' . $id, array("role" => "form")); ?>
         <div class="form-group">
             <div class="input-group input-group-merge input-group-alternative mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
                 </div>
-                <input class="form-control" placeholder="Name" type="text" name="unit_name" value="<?php echo ($this->input->post('unit_name') ? $this->input->post('unit_name') : $data['unit_name']); ?>">
-                <span class="text-danger"><?php echo form_error('unit_name'); ?></span>
+                <input class="form-control" placeholder="Name" type="text" name="position_name" value="<?php echo ($this->input->post('position_name') ? $this->input->post('position_name') : $data['position_name']); ?>">
+                <span class="text-danger"><?php echo form_error('position_name'); ?></span>
             </div>
         </div>
         <div class="text-center">

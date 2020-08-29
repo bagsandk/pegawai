@@ -20,4 +20,8 @@ class fb
     {
         return $this->firebase()->getAuth();
     }
+    public function storage()
+    {
+        return $this->firebase()->getStorage();
+    }
 }

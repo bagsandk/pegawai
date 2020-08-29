@@ -28,8 +28,8 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
                 </div>
-                <input class="form-control" placeholder="Phone Number" type="text" name="phone" value="<?php if (isset($user['phone'])) {
-                                                                                                            echo ($this->input->post('phone') ? $this->input->post('phone') : $user['phone']);
+                <input class="form-control" placeholder="Phone Number" type="text" name="phone" value="<?php if (isset($user['phonenumber'])) {
+                                                                                                            echo ($this->input->post('phone') ? $this->input->post('phone') : $user['phonenumber']);
                                                                                                         } ?>">
                 <span class="text-danger"><?php echo form_error('phone'); ?></span>
             </div>

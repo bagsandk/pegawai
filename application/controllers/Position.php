@@ -1,6 +1,6 @@
 <?php
 
-class Posisi extends CI_Controller
+class Position extends CI_Controller
 {
 
     function __construct()
@@ -10,10 +10,9 @@ class Posisi extends CI_Controller
     }
     public function index()
     {
-
-        $data['posisi'] = $this->fb->db()->getReference('position')->getValue();
-        $data['tittle'] = 'Posisi';
-        $data['_view'] = 'posisi/index';
+        $data['position'] = $this->fb->db()->getReference('position')->getValue();
+        $data['tittle'] = 'Position';
+        $data['_view'] = 'position/index';
         $this->load->view('layouts/main', $data);
     }
     public function add()
@@ -26,8 +25,8 @@ class Posisi extends CI_Controller
             ];
             try {
                 //buat position 
-                $ref = 'position/';
-                $this->fb->db()->getReference($ref)->set($data); //buat position verif
+                $ref = 'position';
+                $this->fb->db()->getReference($ref)->push($data); //buat position verif
             } catch (Exception $e) {
                 $m = $e->getMessage();
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');
@@ -36,23 +35,23 @@ class Posisi extends CI_Controller
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil menambahkan data position </div>');
             redirect('position/');
         } else {
-            $data['tittle'] = 'Tambah Data position';
-            $data['_view'] = 'posisi/add';
+            $data['tittle'] = 'Tambah Data Position';
+            $data['_view'] = 'position/add';
             $this->load->view('layouts/main', $data);
         }
     }
-    public function edit($uid)
+    public function edit($id)
     {
-        if ($data['position'] = $this->fb->db()->getReference('position/' . $uid)->getValue()) {
+        if ($data['position'] = $this->fb->db()->getReference('position/' . $id)->getValue()) {
             $this->load->library('form_validation');
             $this->form_validation->set_rules('position_name', 'Position_name', 'required');
             if ($this->form_validation->run()) {
-                $data = [
+                $params = [
                     'position_name' => $this->input->post('position_name'),
                 ];
                 try {
                     $updates = [
-                        'position/' . $uid => $data
+                        'position/' . $id => $params
                     ];
                     $this->fb->db()->getReference()->update($updates);
                 } catch (Exception $e) {
@@ -60,28 +59,30 @@ class Posisi extends CI_Controller
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');
                     redirect('user');
                 }
-                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data ' . $this->input->post('name') . ' berhasil di ubah! </div>');
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data ' . $this->input->post('position_name') . ' berhasil di ubah! </div>');
                 redirect('position');
             } else {
-                $data['tittle'] = 'Edit Data position';
-                $data['_view'] = 'posisi/edit';
+                $data['tittle'] = 'Edit Data Position';
+                $data['data'] = $this->fb->db()->getReference('position/' . $id)->getValue();
+                $data['id'] = $id;
+                $data['_view'] = 'position/edit';
                 $this->load->view('layouts/main', $data);
             }
         } else {
             show_error('Data tidak ada!.');
         }
     }
-    function delete($uid)
+    function delete($id)
     {
         admincek();
-        if ($usr = $this->fb->db()->getReference('position/' . $uid)->getValue()) {
+        if ($dt = $this->fb->db()->getReference('position/' . $id)->getValue()) {
             try {
-                $this->fb->db()->getReference('position/' . $uid)->remove();
+                $this->fb->db()->getReference('position/' . $id)->remove();
             } catch (Exception $e) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed' . $e->getMessage() . ' </div>');
                 redirect('position');
             }
-            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $usr['nama'] . ' berhasil di hapus! </div>');
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $dt['position_name'] . ' berhasil di hapus! </div>');
             redirect('position');
         } else {
             show_error('Data tidak ada!.');

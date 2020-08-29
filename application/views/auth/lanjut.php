@@ -14,7 +14,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-atom"></i></span>
                             </div>
-                            <input class="form-control" placeholder="pers_no" type="text" name="pers_no">
+                            <input class="form-control" placeholder="pers_no" type="text" name="pers_no" value="<?php echo $this->input->post('pers_no'); ?>">
                             <span class="text-danger"><?php echo form_error('pers_no'); ?></span>
                         </div>
                     </div>
@@ -23,7 +23,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-single-02"></i></span>
                             </div>
-                            <input class="form-control" placeholder="Name" type="text" name="name">
+                            <input class="form-control" placeholder="Name" type="text" name="name" value="<?php echo $this->input->post('name'); ?>">
                             <span class="text-danger"><?php echo form_error('name'); ?></span>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                                 <option value="">Position</option>
                                 <?php
                                 foreach ($position as $p) {
-                                    $selected = ($p['position_name'] == $this->input->post('position_name')) ? ' selected="selected"' : "";
+                                    $selected = ($p['position_name'] == $this->input->post('position')) ? ' selected="selected"' : "";
 
                                     echo '<option value="' . $p['position_name'] . '" ' . $selected . '>' . $p['position_name'] . '</option>';
                                 }
@@ -54,7 +54,7 @@
                                 <option value="">Organizational unit</option>
                                 <?php
                                 foreach ($unit as $p) {
-                                    $selected = ($p['unit_name'] == $this->input->post('unit_name')) ? ' selected="selected"' : "";
+                                    $selected = ($p['unit_name'] == $this->input->post('unit')) ? ' selected="selected"' : "";
 
                                     echo '<option value="' . $p['unit_name'] . '" ' . $selected . '>' . $p['unit_name'] . '</option>';
                                 }
@@ -71,11 +71,10 @@
                             <select name="pers_area" class="form-control">
                                 <option value="">Personnal Area</option>
                                 <?php
-                                $pers_area = array(
-                                    'Kebun PTPN VII' => 'Kebun PTPN VII',
-                                );
-                                foreach ($pers_area as $value => $display_text) {
-                                    echo '<option value="' . $value . '">' . $display_text . '</option>';
+                                $pers_area = array('Kebun PTPN VII',);
+                                foreach ($pers_area as $p) {
+                                    $selected = ($p == $this->input->post('pers_area')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . $p . '" ' . $selected . '>' . $p . '</option>';
                                 }
                                 ?>
                             </select>
@@ -90,11 +89,10 @@
                             <select name="pers_subarea" class="form-control">
                                 <option value="">Personnal Subarea</option>
                                 <?php
-                                $pers_subarea = array(
-                                    'Kedaton' => 'Kedaton',
-                                );
-                                foreach ($pers_subarea as $value => $display_text) {
-                                    echo '<option value="' . $value . '">' . $display_text . '</option>';
+                                $pers_subarea = array('Kedaton',);
+                                foreach ($pers_subarea as $p) {
+                                    $selected = ($p == $this->input->post('pers_subarea')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . $p . '" ' . $selected . '>' . $p . '</option>';
                                 }
                                 ?>
                             </select>
@@ -109,10 +107,10 @@
                             <select name="ps_group" class="form-control">
                                 <option value="">Personnel Group</option>
                                 <?php
+                                $ps_group = ["0HON", "0PKWT", "IA", "IB", "IC", "ID", "IIA", "IIB", "IIC", "IID", "IIIA", "IIIB", "IIID", "IVB"];
                                 foreach ($ps_group as $p) {
-                                    $selected = ($p['ps_group_name'] == $this->input->post('ps_group_name')) ? ' selected="selected"' : "";
-
-                                    echo '<option value="' . $p['ps_group_name'] . '" ' . $selected . '>' . $p['ps_group_name'] . '</option>';
+                                    $selected = ($p == $this->input->post('ps_group')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . $p . '" ' . $selected . '>' . $p . '</option>';
                                 }
                                 ?>
                             </select>
@@ -128,7 +126,8 @@
                                 <option value="">Level</option>
                                 <?php
                                 for ($n = 0; $n < 15; $n++) {
-                                    echo '<option value="' . sprintf("%02d", $n) . '">' . sprintf("%02d", $n) . '</option>';
+                                    $selected = (sprintf("%02d", $n) == $this->input->post('lv')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . sprintf("%02d", $n) . '"' . $selected . '>' . sprintf("%02d", $n) . '</option>';
                                 }
                                 ?>
 
@@ -145,7 +144,7 @@
                                 <option value="">Strata</option>
                                 <?php
                                 foreach ($strata as $p) {
-                                    $selected = ($p['strata_name'] == $this->input->post('strata_name')) ? ' selected="selected"' : "";
+                                    $selected = ($p['strata_name'] == $this->input->post('strata')) ? ' selected="selected"' : "";
 
                                     echo '<option value="' . $p['strata_name'] . '" ' . $selected . '>' . $p['strata_name'] . '</option>';
                                 }
@@ -162,13 +161,10 @@
                             <select name="emp_group" class="form-control">
                                 <option value="">Employee Group</option>
                                 <?php
-                                $emp_group = array(
-                                    'Karpim - Tetap' => 'Karpim - Tetap',
-                                    'Karpel - Tetap' => 'Karpel - Tetap',
-                                    'Tidak - Tetap' => 'Tidak - Tetap',
-                                );
-                                foreach ($emp_group as $value => $display_text) {
-                                    echo '<option value="' . $value . '">' . $display_text . '</option>';
+                                $emp_group = array('Karpim - Tetap', 'Karpel - Tetap', 'Tidak - Tetap',);
+                                foreach ($emp_group as $p) {
+                                    $selected = ($p == $this->input->post('emp_group')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . $p . '"' . $selected . '>' . $p . '</option>';
                                 }
                                 ?>
                             </select>
@@ -183,17 +179,9 @@
                             <select name="education" class="form-control">
                                 <option value="">Education</option>
                                 <?php
-                                $education = array(
-                                    'SD' => 'SD',
-                                    'SLTP' => 'SLTP',
-                                    'SLTA' => 'SLTA',
-                                    'D3' => 'D3',
-                                    'S1' => 'S1',
-                                    'S2' => 'S2',
-                                    'S3' => 'S3',
-                                );
-                                foreach ($education as $value => $display_text) {
-                                    echo '<option value="' . $value . '">' . $display_text . '</option>';
+                                foreach ($education as $p) {
+                                    $selected = ($p['education_name'] == $this->input->post('education')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . $p['education_name'] . '" ' . $selected . '>' . $p['education_name'] . '</option>';
                                 }
                                 ?>
                             </select>
@@ -213,7 +201,8 @@
                                     'Female' => 'Perempuan',
                                 );
                                 foreach ($gender as $value => $display_text) {
-                                    echo '<option value="' . $value . '">' . $display_text . '</option>';
+                                    $selected = ($value == $this->input->post('gender')) ? ' selected="selected"' : "";
+                                    echo '<option value="' . $value . '"' . $selected . '>' . $display_text . '</option>';
                                 }
                                 ?>
                             </select>
@@ -225,23 +214,14 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                             </div>
-                            <input class="form-control" placeholder="DD" type="text" name="dd">
-                            <input class="form-control" placeholder="MM" type="text" name="mm">
-                            <input class="form-control" placeholder="YYYY" type="text" name="yyyy">
-                            <span class="text-danger"><?php echo form_error('birth_date'); ?></span>
+                            <input class="form-control" placeholder="DD" type="text" name="dd" value="<?php echo $this->input->post('dd'); ?>">
+                            <span class="text-danger"><?php echo form_error('dd'); ?></span>
+                            <input class="form-control" placeholder="MM" type="text" name="mm" value="<?php echo $this->input->post('mm'); ?>">
+                            <span class="text-danger"><?php echo form_error('mm'); ?></span>
+                            <input class="form-control" placeholder="YYYY" type="text" name="yyyy" value="<?php echo $this->input->post('yyyy'); ?>">
+                            <span class="text-danger"><?php echo form_error('yyyy'); ?></span>
                         </div>
                     </div>
-
-                    <!-- <div class="row my-4">
-                            <div class="col-12">
-                                <div class="custom-control custom-control-alternative custom-checkbox">
-                                    <input class="custom-control-input" id="customCheckRegister" type="checkbox">
-                                    <label class="custom-control-label" for="customCheckRegister">
-                                        <span class="text-muted">I agree with the <a href="#!">Privacy Policy</a></span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div> -->
                     <div class="text-center">
                         <button type="submit" class="btn btn-primary mt-4">Create account</button>
                     </div>

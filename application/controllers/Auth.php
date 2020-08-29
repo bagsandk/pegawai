@@ -8,8 +8,12 @@ class Auth extends CI_Controller
     }
     public function index()
     {
-        if ($this->session->has_userdata('id')) {
-            redirect('dashboard');
+        if ($this->session->has_userdata('verif')) {
+            if ($this->session->userdata('role') == 'admin') {
+                redirect('dashboard');
+            } else {
+                redirect('user/profil');
+            }
         }
         $this->load->library('form_validation');
         $this->form_validation->set_rules('email', 'Email', 'required|max_length[100]');
@@ -32,11 +36,16 @@ class Auth extends CI_Controller
                         'email' => $data['email'],
                         'id' => $data['localId'],
                         'verif' => $u['verif'],
-                        'role' => $u['role']
+                        'role' => $u['role'],
+                        'foto' => $u['photourl']
                     ];
                     $this->session->set_userdata($d_session);
-                    if ($u['verif'] == false) {
-                        redirect('user/profil');
+                    if ($u['role'] == 'user') {
+                        if ($u['verif'] == 2) {
+                            redirect('auth/registerlanjut');
+                        } else {
+                            redirect('user/profil');
+                        }
                     } else {
                         redirect('Dashboard');
                     }
@@ -80,14 +89,14 @@ class Auth extends CI_Controller
                 'phoneNumber' => '+62' . $this->input->post('phone'),
                 'password' => $this->input->post('password'),
                 'displayName' => $this->input->post('name'),
-                'photoUrl' => base_url('assets/img/profile/default.png'),
+                'photoUrl' => base_url('assets/img/profil/default.png'),
                 'disabled' => true,
             ];
             $params = array(
                 'email' => $this->input->post('email'),
                 'role' => 'user',
                 'nama' => $this->input->post('name'),
-                'verif' => false,
+                'verif' => 2,
             );
             try {
                 //buat auth
@@ -100,7 +109,7 @@ class Auth extends CI_Controller
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');
                 redirect('auth/register');
             }
-            $this->session->set_userdata(['uid' => $t['uid']]);
+            $this->session->set_userdata(['id' => $t['uid']]);
             redirect('auth/registerlanjut');
         } else {
             $data['tittle'] = 'Register Account';
@@ -110,7 +119,11 @@ class Auth extends CI_Controller
     }
     public function registerlanjut()
     {
-        if (!$this->session->has_userdata('uid')) {
+        $uid = $this->session->userdata('id');
+        if (!$this->session->has_userdata('id')) {
+            redirect('auth');
+        }
+        if ($this->session->has_userdata('verif') and $this->session->userdata('verif') != 2) {
             redirect('auth');
         }
         $this->load->library('form_validation');
@@ -147,7 +160,8 @@ class Auth extends CI_Controller
             ];
             try {
                 //buat auth
-                $ref = 'karyawan/' . $this->session->userdata('uid');
+                $ref = 'karyawan/' . $this->session->userdata('id');
+                $this->fb->db()->getReference('users/' . $uid)->getChild('verif')->set(false);
                 $this->fb->db()->getReference($ref)->set($data); //buat db users
             } catch (Exception $e) {
                 $m = $e->getMessage();
@@ -156,12 +170,12 @@ class Auth extends CI_Controller
             }
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Berhasil membuat akun </div>');
             $this->session->unset_userdata('uid');
-            redirect('auth');
+            redirect('auth/logout');
         } else {
             $data['position']  = $this->fb->db()->getReference('position')->getValue();
             $data['unit']  = $this->fb->db()->getReference('unit')->getValue();
             $data['strata']  = $this->fb->db()->getReference('strata')->getValue();
-            $data['ps_group']  = $this->fb->db()->getReference('ps_group')->getValue();
+            $data['education']  = $this->fb->db()->getReference('education')->getValue();
             $data['tittle'] = 'Register Account';
             $data['_view'] = 'auth/lanjut';
             $this->load->view('layouts/auth', $data);
@@ -172,7 +186,7 @@ class Auth extends CI_Controller
         $this->session->unset_userdata('email');
         $this->session->unset_userdata('name');
         $this->session->unset_userdata('token');
-        // $this->session->unset_userdata('foto');
+        $this->session->unset_userdata('foto');
         $this->session->unset_userdata('role');
         $this->session->unset_userdata('verif');
         $this->session->unset_userdata('id');

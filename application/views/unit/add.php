@@ -1,6 +1,7 @@
 <div class="card">
     <!-- Card header -->
     <div class="card-header border-0">
+        <?= $this->session->flashdata('message'); ?>
         <h3 class="mb-0"><?= $tittle; ?></h3>
     </div>
     <div class="card-body px-lg-5 py-lg-5">

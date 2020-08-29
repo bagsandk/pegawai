@@ -70,7 +70,7 @@ class Karyawan extends CI_Controller
             $data['user'] = $this->fb->db()->getReference('users')->orderByChild('verif')->equalTo('2')->getValue();
             $data['unit']  = $this->fb->db()->getReference('unit')->getValue();
             $data['strata']  = $this->fb->db()->getReference('strata')->getValue();
-            $data['ps_group']  = $this->fb->db()->getReference('ps_group')->getValue();
+            $data['education']  = $this->fb->db()->getReference('education')->getValue();
             $data['tittle'] = 'Tambah Data Karyawan';
             $data['_view'] = 'karyawan/add';
             $this->load->view('layouts/main', $data);
@@ -127,7 +127,7 @@ class Karyawan extends CI_Controller
                 $data['position']  = $this->fb->db()->getReference('position')->getValue();
                 $data['unit']  = $this->fb->db()->getReference('unit')->getValue();
                 $data['strata']  = $this->fb->db()->getReference('strata')->getValue();
-                $data['ps_group']  = $this->fb->db()->getReference('ps_group')->getValue();
+                $data['education']  = $this->fb->db()->getReference('education')->getValue();
                 $ref = 'karyawan/' . $uid;
                 $data['karyawan'] = $this->fb->db()->getReference($ref)->getValue();
                 $data['uid'] = $uid;
@@ -158,7 +158,7 @@ class Karyawan extends CI_Controller
     function cetak($uid)
     {
         if ($data['karyawan'] = $this->fb->db()->getReference('karyawan/' . $uid)->getValue()) {
-
+            $data['user'] = $this->fb->db()->getReference('users/' . $uid)->getValue();
             $this->load->library('pdf');
             $this->pdf->setPaper('A4', 'potrait');
             $this->pdf->filename = "laporan-petanikode.pdf";

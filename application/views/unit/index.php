@@ -1,6 +1,7 @@
 <div class="card">
     <!-- Card header -->
     <div class="card-header border-0">
+        <?= $this->session->flashdata('message'); ?>
         <div class="d-flex justify-content-between">
             <h3 class="mb-0"><?= $tittle; ?> table</h3>
             <a href="<?= base_url('unit/add') ?>">
@@ -23,7 +24,7 @@
             </thead>
             <tbody class="list">
                 <?php $n = 1;
-                foreach ($unit as $key => $t) { ?>
+                foreach ((array)$unit as $key => $t) { ?>
                     <tr>
                         <td><?= $n++; ?></td>
                         <td><?= $t['unit_name']; ?></td>
@@ -40,6 +41,7 @@
                             </a>
                         </td>
                     </tr>
+
                 <?php } ?>
             </tbody>
         </table>

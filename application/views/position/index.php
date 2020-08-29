@@ -1,9 +1,10 @@
 <div class="card">
     <!-- Card header -->
     <div class="card-header border-0">
+        <?= $this->session->flashdata('message'); ?>
         <div class="d-flex justify-content-between">
             <h3 class="mb-0"><?= $tittle; ?> table</h3>
-            <a href="<?= base_url('grup/add') ?>">
+            <a href="<?= base_url('position/add') ?>">
                 <div class="icon icon-shape bg-gradient-green text-white rounded-circle shadow" title="Tambah">
                     <i class="ni ni-fat-add"></i>
                 </div>
@@ -17,29 +18,30 @@
             <thead class="thead-light">
                 <tr>
                     <th scope="col">No</th>
-                    <th scope="col">PS Group</th>
+                    <th scope="col">Position</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
             <tbody class="list">
                 <?php $n = 1;
-                foreach ($ps_group as $key => $t) { ?>
+                foreach ((array)$position as $key => $t) { ?>
                     <tr>
                         <td><?= $n++; ?></td>
-                        <td><?= $t['ps_group_name']; ?></td>
+                        <td><?= $t['position_name']; ?></td>
                         <td>
-                            <a href="<?= base_url('grup/edit/') . $key ?>">
+                            <a href="<?= base_url('position/edit/') . $key ?>">
                                 <div class="icon icon-shape icon-sm bg-gradient-orange text-white rounded-circle shadow" title="Edit">
                                     <i class="ni ni-palette"></i>
                                 </div>
                             </a>
-                            <a href="<?= base_url('grup/delete/') . $key ?>" onclick="return confirm('Apakah anda yakin ingin menghapus <?= $t['ps_group_name']; ?>?');">
+                            <a href="<?= base_url('position/delete/') . $key ?>" onclick="return confirm('Apakah anda yakin ingin menghapus <?= $t['position_name']; ?>?');">
                                 <div class="icon icon-shape icon-sm bg-gradient-red text-white rounded-circle shadow" title="Hapus">
                                     <i class="ni ni-fat-remove"></i>
                                 </div>
                             </a>
                         </td>
                     </tr>
+
                 <?php } ?>
             </tbody>
         </table>

@@ -40,7 +40,8 @@ class User extends CI_Controller
                 'emailVerified' => false,
                 'password' => $this->input->post('password'),
                 'displayName' => $this->input->post('name'),
-                'photoUrl' => base_url('assets/img/profile/default.png'),
+                'phoneNumber' => '+62' . $this->input->post('phone'),
+                'photoUrl' => 'default.png',
                 'disabled' => false,
             ];
             $params = array(
@@ -48,6 +49,8 @@ class User extends CI_Controller
                 'role' => $this->input->post('role'),
                 'nama' => $this->input->post('name'),
                 'verif' => $this->input->post('verif'),
+                'phonenumber' =>  $this->input->post('phone'),
+                'photourl' =>  'default.png',
             );
             try {
                 //buat auth
@@ -82,13 +85,18 @@ class User extends CI_Controller
             $this->form_validation->set_rules('name', 'Name', 'required');
             $this->form_validation->set_rules('role', 'Role', 'required');
             $this->form_validation->set_rules('verif', 'Verif', 'required');
-
             if ($this->form_validation->run()) {
+                if (isset($data['user']['photourl'])) {
+                    $foto = $data['user']['photourl'];
+                } else {
+                    $foto = 'default.png';
+                }
                 $userProperties = [
                     'email' => $this->input->post('email'),
                     'emailVerified' => false,
                     'displayName' => $this->input->post('name'),
-                    'photoUrl' => base_url('assets/img/profile/default.png'),
+                    'photoUrl' => $foto,
+                    'phoneNumber' => '+62' . $this->input->post('phone'),
                     'disabled' => false,
                 ];
                 $params = array(
@@ -96,6 +104,8 @@ class User extends CI_Controller
                     'role' => $this->input->post('role'),
                     'nama' => $this->input->post('name'),
                     'verif' => $this->input->post('verif'),
+                    'phonenumber' => $this->input->post('phone'),
+                    'photourl' => $foto,
                 );
                 $updates = [
                     'users/' . $uid => $params
@@ -125,11 +135,85 @@ class User extends CI_Controller
     }
     function profil()
     {
-        $ref = 'users/' . $this->session->userdata('id');
-        $data['user'] = $this->fb->db()->getReference($ref)->getValue();
-        $data['tittle'] = 'Profil';
-        $data['_view'] = 'user/profil';
-        $this->load->view('layouts/main', $data);
+        if ($this->session->userdata('verif') == 2) {
+            redirect('auth/registerlanjut');
+        }
+        $this->load->library('form_validation');
+        $uid = $this->session->userdata('id');
+        if (isset($_POST['bpassword'])) {
+            $this->form_validation->set_rules('newpass', 'Newpass', 'required|min_length[6]|trim');
+            try {
+                $this->fb->auth()->changeUserPassword($uid, $this->input->post('newpass'));
+            } catch (Exception $e) {
+                $m = $e->getMessage();
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');
+                redirect('user/profil');
+            }
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Password berhasil di ubah! </div>');
+            redirect('user/profil');
+        } else if (isset($_POST['bprofil'])) {
+            $this->form_validation->set_rules('email', 'Email', 'required|max_length[100]');
+            $this->form_validation->set_rules('phone', 'Phone', 'max_length[13]|numeric');
+            $this->form_validation->set_rules('name', 'Name', 'required');
+            if ($this->form_validation->run()) {
+                $userProperties = [
+                    'email' => $this->input->post('email'),
+                    'phoneNumber' => '+62' . $this->input->post('phone'),
+                    'displayName' => $this->input->post('name'),
+                ];
+                try {
+                    $this->fb->auth()->updateUser($uid, $userProperties);
+                    $this->fb->db()->getReference('users/' . $uid)->getChild('phonenumber')->set($this->input->post('phone'));
+                    $this->fb->db()->getReference('users/' . $uid)->getChild('email')->set($this->input->post('email'));
+                    $this->fb->db()->getReference('users/' . $uid)->getChild('nama')->set($this->input->post('name'));
+                } catch (Exception $e) {
+                    $m = $e->getMessage();
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');
+                    redirect('user/profil');
+                }
+                $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">Data ' . $this->input->post('name') . ' berhasil di ubah! </div>');
+                redirect('user/profil');
+            } else {
+                redirect('user/profil');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data tidak ada </div>');
+            }
+        } else if (isset($_POST['bfoto'])) {
+            if (isset($_FILES["photo"])) {
+                $config['upload_path'] = './assets/img/profil/';
+                $config['allowed_types'] = 'gif|jpg|png';
+                $config['max_size']     = '2000';
+                $this->load->library('upload', $config);
+                $data = $this->fb->db()->getReference('users/' . $uid)->getValue();
+                if ($this->upload->do_upload('photo')) {
+                    $new = $this->upload->data('file_name');
+                    $foto_lama = $data['photourl'];
+                    if ($foto_lama != 'default.png') {
+                        unlink(FCPATH . 'assets/img/profil/' . $foto_lama);
+                    }
+                    try {
+                        $this->fb->db()->getReference('users/' . $uid)->getChild('photourl')->set($new);
+                    } catch (Exception $e) {
+                        $m = $e->getMessage();
+                        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');
+                        redirect('user/profil');
+                    }
+                    $this->session->set_userdata('foto', $new);
+                    $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert"> Foto berhasil diperbarui!</div>');
+                    redirect('user/profil');
+                } else {
+                    echo $this->upload->display_errors();
+                }
+            } else {
+                redirect('user/profil');
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">Data foto tidak ada </div>');
+            }
+        } else {
+            $ref = 'users/' . $uid;
+            $data['user'] = $this->fb->db()->getReference($ref)->getValue();
+            $data['tittle'] = 'Profil';
+            $data['_view'] = 'user/profil';
+            $this->load->view('layouts/main', $data);
+        }
     }
     function verif()
     {

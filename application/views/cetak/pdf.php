@@ -2,8 +2,11 @@
 $pathptpn7 = base_url('./assets/img/brand/ptpn7.png');
 $type1 = pathinfo($pathptpn7, PATHINFO_EXTENSION);
 $data1 = file_get_contents($pathptpn7);
-
-$pathprofil = base_url('./assets/img/profil/default.png');
+if (isset($user['photourl'])) {
+    $pathprofil = base_url('./assets/img/profil/' . $user['photourl']);
+} else {
+    $pathprofil = base_url('./assets/img/profil/default.png');
+}
 $type2 = pathinfo($pathprofil, PATHINFO_EXTENSION);
 $data2 = file_get_contents($pathprofil);
 
@@ -30,8 +33,8 @@ $profil = 'data:image/' . $type2 . ';base64,' . base64_encode($data2);
     </table>
     <center>
         <p style="font-size: 15; margin-top:30px; margin-bottom:0px">Data Karyawan</p>
-        <p style="font-size: 12 ;margin-top:0px; margin-bottom:0px">Pers NO : <?= $karyawan['Pers_No']; ?></p>
-        <img src="<?= $profil ?>" width="200" height="200" />
+        <p style="font-size: 12 ;margin-top:0px; margin-bottom:3px">Pers NO : <?= $karyawan['Pers_No']; ?></p>
+        <img src="<?= $profil ?>" width="200" height="200" style="margin-top: 15px;" />
     </center>
 
     <h3>Data Personal</h3>

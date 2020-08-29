@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
-    <meta name="author" content="Creative Tim">
+    <meta name="author" content="Pegawai ptpn7">
     <title><?= $tittle; ?> </title>
     <!-- Favicon -->
     <link rel="icon" href="<?= base_url() ?>/assets/img/brand/favicon.png" type="image/png">
@@ -38,7 +38,7 @@
                     <ul class="navbar-nav">
                         <?php if ($this->session->userdata('role') == 'user') { ?>
                             <li class="nav-item">
-                                <a class="nav-link <?= $this->uri->segment(2) == "profil" ? "active" : ""  ?> href=" <?= base_url('user/profil') ?>">
+                                <a class="nav-link <?= $this->uri->segment(2) == "profil" ? "active" : ""  ?> " href=" <?= base_url('user/profil') ?>">
                                     <i class="ni ni-single-02 text-primary"></i>
                                     <span class="nav-link-text">Profil</span>
                                 </a>
@@ -52,8 +52,14 @@
                                 </a>
                             </li>
                             <li class="nav-item">
+                                <a class="nav-link <?= $this->uri->segment(1) == "karyawan" ? "active" : ""  ?> " href=" <?= base_url('karyawan') ?>">
+                                    <i class="ni ni-badge text-yellow"></i>
+                                    <span class="nav-link-text">Karyawan</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
                                 <a class="nav-link <?= $this->uri->segment(1) == "user" && $this->uri->segment(2) == null ? "active" : ""  ?> " href=" <?= base_url('user') ?>">
-                                    <i class="ni ni-single-02 text-orange"></i>
+                                    <i class="ni ni-single-02 text-blue"></i>
                                     <span class="nav-link-text">User</span>
                                 </a>
                             </li>
@@ -64,34 +70,29 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link <?= $this->uri->segment(1) == "karyawan" ? "active" : ""  ?> " href=" <?= base_url('karyawan') ?>">
-                                    <i class="ni ni-badge text-yellow"></i>
-                                    <span class="nav-link-text">Karyawan</span>
+                                <a class="nav-link dropdown-toggle  <?php $l = $this->uri->segment(1);
+                                                                    echo $l == "unit" || $l == "education" || $l == "strata" || $l == "position" ? "active" : ""  ?>"" href=" #" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="ni ni-app text-orange"></i>
+                                    Master
                                 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?= $this->uri->segment(1) == "posisi" ? "active" : ""  ?>" href="<?= base_url('posisi') ?>">
-                                    <i class="ni ni-square-pin text-blue"></i>
-                                    <span class="nav-link-text">posisi</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?= $this->uri->segment(1) == "unit" ? "active" : ""  ?>" href="<?= base_url('unit') ?>">
-                                    <i class="ni ni-square-pin text-green"></i>
-                                    <span class="nav-link-text">Unit</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?= $this->uri->segment(1) == "grup" ? "active" : ""  ?> " href=" <?= base_url('grup') ?>">
-                                    <i class="ni ni-ungroup text-purple"></i>
-                                    <span class="nav-link-text">grup</span>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link <?= $this->uri->segment(1) == "strata" ? "active" : ""  ?>" href="<?= base_url('strata') ?>">
-                                    <i class="ni ni-ui-04 text-orange"></i>
-                                    <span class="nav-link-text">Strata</span>
-                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link" href="<?= base_url('position') ?>">
+                                        <i class="ni ni-square-pin text-blue"></i>
+                                        <span class="nav-link-text">position</span>
+                                    </a>
+                                    <a class="nav-link" href="<?= base_url('unit') ?>">
+                                        <i class="ni ni-controller text-green"></i>
+                                        <span class="nav-link-text">Unit</span>
+                                    </a>
+                                    <a class="nav-link" href=" <?= base_url('education') ?>">
+                                        <i class="ni ni-hat-3 text-purple"></i>
+                                        <span class="nav-link-text">Education</span>
+                                    </a>
+                                    <a class="nav-link active" href="<?= base_url('strata') ?>">
+                                        <i class="ni ni-ui-04 text-orange"></i>
+                                        <span class="nav-link-text">Strata</span>
+                                    </a>
+                                </div>
                             </li>
                         <?php } ?>
                     </ul>
@@ -128,7 +129,7 @@
                             <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="media align-items-center">
                                     <span class="avatar avatar-sm rounded-circle">
-                                        <img alt="Image placeholder" src="<?= base_url() ?>/assets/img/default.png">
+                                        <img alt="Image placeholder" src="<?= $this->session->userdata('foto') !== "" ? base_url('assets/img/profil/' . $this->session->userdata('foto')) : 'default.png'; ?>" height="36" width="36">
                                     </span>
                                     <div class="media-body  ml-2  d-none d-lg-block">
                                         <span class="mb-0 text-sm  font-weight-bold"><?= $this->session->userdata('name'); ?></span>
@@ -136,16 +137,13 @@
                                 </div>
                             </a>
                             <div class="dropdown-menu  dropdown-menu-right ">
-                                <div class="dropdown-header noti-title">
-                                    <h6 class="text-overflow m-0">Welcome!</h6>
-                                </div>
                                 <a href="<?= base_url('user/profil') ?>" class="dropdown-item">
-                                    <i class="ni ni-single-02"></i>
+                                    <i class="ni ni-single-02 text-green"></i>
                                     <span>My profile</span>
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a href="<?= base_url('auth/logout') ?>" class="dropdown-item">
-                                    <i class="ni ni-user-run"></i>
+                                    <i class="ni ni-user-run text-red"></i>
                                     <span>Logout</span>
                                 </a>
                             </div>
@@ -195,6 +193,19 @@
     <!-- Argon JS -->
     <script src="<?= base_url() ?>/assets/js/argon.js?v=1.2.0"></script>
     <!-- <script src="<?= base_url() ?>/assets/js/argon.min.js"></script> -->
+    <script type="text/javascript">
+        $(function() {
+            $("#btncpass").click(function() {
+                var password = $("#newpass").val();
+                var confirmPassword = $("#confirmpass").val();
+                if (password != confirmPassword) {
+                    alert("Passwords do not match.");
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
 </body>
 
 </html>

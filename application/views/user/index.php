@@ -39,8 +39,13 @@
                         <td>
                             <?php if ($tittle == 'Verifikasi User') { ?>
                                 <a href="<?= base_url('user/verif/') . $key ?>">
-                                    <div class="icon icon-shape icon-sm bg-gradient-green text-white rounded-circle shadow" title="Edit">
+                                    <div class="icon icon-shape icon-sm bg-gradient-green text-white rounded-circle shadow" title="Terima">
                                         <i class="ni ni-check-bold"></i>
+                                    </div>
+                                </a>
+                                <a href="<?= base_url('user/verif/') . $key ?>">
+                                    <div class="icon icon-shape icon-sm bg-gradient-red text-white rounded-circle shadow" title="Tolak">
+                                        <i class="ni ni-fat-delete"></i>
                                     </div>
                                 </a>
                             <?php } else { ?>
