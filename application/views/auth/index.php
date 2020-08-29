@@ -5,7 +5,7 @@
                 <div class="card-body px-lg-5 py-lg-5">
                     <div class="text-center text-muted mb-4">
                         <?= $this->session->flashdata('message'); ?>
-                        <small>Or sign in with credentials</small>
+                        <small> Sign in </small>
                     </div>
                     <?php echo form_open('auth/', array("role" => "form")); ?>
                     <div class="form-group mb-3">
