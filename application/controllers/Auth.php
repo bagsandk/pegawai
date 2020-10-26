@@ -41,7 +41,9 @@ class Auth extends CI_Controller
                     ];
                     $this->session->set_userdata($d_session);
                     if ($u['role'] == 'user') {
-                        if ($u['verif'] == 2) {
+                        // var_dump($u['verif']);
+                        // die;
+                        if ($u['verif'] === '2') {
                             redirect('auth/registerlanjut');
                         } else {
                             redirect('user/profil');
@@ -96,7 +98,9 @@ class Auth extends CI_Controller
                 'email' => $this->input->post('email'),
                 'role' => 'user',
                 'nama' => $this->input->post('name'),
-                'verif' => 2,
+                'verif' => '2',
+                'phonenumber' => '+62' . $this->input->post('phone'),
+                'photourl' => 'default.png'
             );
             try {
                 //buat auth
@@ -123,7 +127,7 @@ class Auth extends CI_Controller
         if (!$this->session->has_userdata('id')) {
             redirect('auth');
         }
-        if ($this->session->has_userdata('verif') and $this->session->userdata('verif') != 2) {
+        if ($this->session->has_userdata('verif') and $this->session->userdata('verif') != '2') {
             redirect('auth');
         }
         $this->load->library('form_validation');
@@ -161,7 +165,7 @@ class Auth extends CI_Controller
             try {
                 //buat auth
                 $ref = 'karyawan/' . $this->session->userdata('id');
-                $this->fb->db()->getReference('users/' . $uid)->getChild('verif')->set(false);
+                $this->fb->db()->getReference('users/' . $uid)->getChild('verif')->set('0');
                 $this->fb->db()->getReference($ref)->set($data); //buat db users
             } catch (Exception $e) {
                 $m = $e->getMessage();

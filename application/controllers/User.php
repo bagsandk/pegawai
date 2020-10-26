@@ -135,7 +135,7 @@ class User extends CI_Controller
     }
     function profil()
     {
-        if ($this->session->userdata('verif') == 2) {
+        if ($this->session->userdata('verif') === '2') {
             redirect('auth/registerlanjut');
         }
         $this->load->library('form_validation');
@@ -221,17 +221,35 @@ class User extends CI_Controller
         $uid = $this->uri->segment(3);
         if ($uid) {
             if ($usr = $this->fb->db()->getReference('users/' . $uid)->getValue()) {
-                $this->fb->db()->getReference('users/' . $uid)->getChild('verif')->set(true);
+                $this->fb->db()->getReference('users/' . $uid)->getChild('verif')->set('1');
                 $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $usr['nama'] . ' berhasil di verifikasi! </div>');
                 redirect('user/verif');
             } else {
                 show_error('Data tidak ada!.');
             }
         }
-        $data['users'] = $this->fb->db()->getReference('users')->orderByChild('verif')->equalTo(false)->getValue();
+        $data['users'] = $this->fb->db()->getReference('users')->orderByChild('verif')->equalTo('0')->getValue();
         $data['tittle'] = 'Verifikasi User';
         $data['_view'] = 'user/index';
         $this->load->view('layouts/main', $data);
+    }
+    function tolak($uid)
+    {
+        admincek();
+        if ($usr = $this->fb->db()->getReference('users/' . $uid)->getValue()) {
+            try {
+                $this->fb->db()->getReference('users/' . $uid)->remove();
+                $this->fb->db()->getReference('karyawan/' . $uid)->remove();
+                $this->fb->auth()->deleteUser($uid);
+            } catch (Exception $e) {
+                $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed' . $e->getMessage() . ' </div>');
+                redirect('user');
+            }
+            $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">' . $usr['nama'] . ' berhasil di tolak! </div>');
+            redirect('user/verif');
+        } else {
+            show_error('Data tidak ada!.');
+        }
     }
     function delete($uid)
     {
@@ -239,6 +257,7 @@ class User extends CI_Controller
         if ($usr = $this->fb->db()->getReference('users/' . $uid)->getValue()) {
             try {
                 $this->fb->db()->getReference('users/' . $uid)->remove();
+                $this->fb->db()->getReference('karyawan/' . $uid)->remove();
                 $this->fb->auth()->deleteUser($uid);
             } catch (Exception $e) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert"> Failed' . $e->getMessage() . ' </div>');

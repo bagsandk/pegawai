@@ -72,8 +72,8 @@
                 <select name="verif" class="form-control">
                     <option value="">Verifikasi</option>
                     <?php $verif = array(
-                        false => 'Tidak Aktif',
-                        true => 'Aktif',
+                        '0' => 'Tidak Aktif',
+                        '1' => 'Aktif',
                     );
                     foreach ($verif as $value => $display_text) {
                         $selected = ($value == $user['verif']) ? ' selected="selected"' : "";

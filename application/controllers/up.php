@@ -6765,7 +6765,7 @@ class up extends CI_Controller
                 "Birth_date" => "8/13/84"
             ]
         );
-        for ($i = 3; $i <= 100; $i++) {
+        for ($i = 0; $i <= 10; $i++) {
             $userProperties = [
                 'email' => $t[$i]['email'],
                 'emailVerified' => false,
@@ -6778,7 +6778,8 @@ class up extends CI_Controller
                 'email' => $t[$i]['email'],
                 'role' => 'user',
                 'nama' => $k[$i]['Personnel_Number'],
-                'verif' => false,
+                'verif' => '0',
+                'photourl' => 'default.png'
             );
             try {
                 //buat auth
@@ -6787,7 +6788,7 @@ class up extends CI_Controller
                 $ref1 = 'users/' . $p['uid'];
                 $this->fb->db()->getReference($ref1)->set($params); //buat db users
                 $ref2 = 'karyawan/' . $p['uid'];
-                $this->fb->db()->getReference($ref2)->set($k[$i]); //buat db users
+                $this->fb->db()->getReference($ref2)->set($k[$i]); //buat db karyawan
             } catch (Exception $e) {
                 $m = $e->getMessage();
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $m . ' </div>');

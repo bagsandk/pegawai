@@ -16,6 +16,47 @@ class Karyawan extends CI_Controller
         $data['_view'] = 'karyawan/index';
         $this->load->view('layouts/main', $data);
     }
+    public function order($req)
+    {
+        admincek();
+        switch ($req) {
+            case 'juru':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Juru')->getValue();
+                break;
+            case 'penata':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Penata')->getValue();
+                break;
+            case 'pembina':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Pembina')->getValue();
+                break;
+            case 'pelaksana':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Pelaksana')->getValue();
+                break;
+            case 'pengatur':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Pengatur')->getValue();
+                break;
+            case 'pp':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Penyelia Madya')->getValue();
+                break;
+            case 'pm':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Strata')->equalTo('Penyelia Pratama')->getValue();
+                break;
+            case 'karpim-tetap':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Employee_Group')->equalTo('Karpim - Tetap')->getValue();
+                break;
+            case 'karpel-tetap':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Employee_Group')->equalTo('Karpel - Tetap')->getValue();
+                break;
+            case 'tidak-tetap':
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->orderByChild('Employee_Group')->equalTo('Tidak Tetap')->getValue();
+                break;
+            default:
+                $data['karyawan'] = $this->fb->db()->getReference('karyawan')->getValue();
+        }
+        $data['tittle'] = 'Karyawan';
+        $data['_view'] = 'karyawan/index';
+        $this->load->view('layouts/main', $data);
+    }
     public function add()
     {
 

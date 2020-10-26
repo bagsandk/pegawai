@@ -43,7 +43,7 @@
                                         <i class="ni ni-check-bold"></i>
                                     </div>
                                 </a>
-                                <a href="<?= base_url('user/verif/') . $key ?>">
+                                <a href="<?= base_url('user/tolak/') . $key ?>">
                                     <div class="icon icon-shape icon-sm bg-gradient-red text-white rounded-circle shadow" title="Tolak">
                                         <i class="ni ni-fat-delete"></i>
                                     </div>

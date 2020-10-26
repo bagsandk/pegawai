@@ -214,11 +214,11 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="ni ni-calendar-grid-58"></i></span>
                             </div>
-                            <input class="form-control" placeholder="DD" type="text" name="dd" value="<?php echo $this->input->post('dd'); ?>">
+                            <input class="form-control" placeholder="DD" type="number" name="dd" max="31" value="<?php echo $this->input->post('dd'); ?>" maxlength="2">
                             <span class="text-danger"><?php echo form_error('dd'); ?></span>
-                            <input class="form-control" placeholder="MM" type="text" name="mm" value="<?php echo $this->input->post('mm'); ?>">
+                            <input class="form-control" placeholder="MM" type="number" name="mm" max="12" value="<?php echo $this->input->post('mm'); ?>" maxlength="2">
                             <span class="text-danger"><?php echo form_error('mm'); ?></span>
-                            <input class="form-control" placeholder="YYYY" type="text" name="yyyy" value="<?php echo $this->input->post('yyyy'); ?>">
+                            <input class="form-control" placeholder="YYYY" type="number" name="yyyy" max="2020" value="<?php echo $this->input->post('yyyy'); ?>" maxlength="4">
                             <span class="text-danger"><?php echo form_error('yyyy'); ?></span>
                         </div>
                     </div>

@@ -70,9 +70,9 @@
                 <select name="verif" class="form-control">
                     <option value="">Verifikasi</option>
                     <?php $verif = array(
-                        0 => 'Tidak Aktif',
-                        1 => 'Aktif',
-                        2 => 'Untuk Karyawan',
+                        '0' => 'Tidak Aktif',
+                        '1' => 'Aktif',
+                        '2' => 'Untuk Karyawan',
                     );
                     foreach ($verif as $value => $display_text) {
                         $selected = ($value == $this->input->post('verif')) ? ' selected="selected"' : "";
